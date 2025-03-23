@@ -3,7 +3,7 @@
 /// <summary>
 /// Автор статьи
 /// </summary>
-public class Author
+public class Author //Publisher
 {
     /// <summary>
     /// Имя
