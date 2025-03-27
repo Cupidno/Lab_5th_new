@@ -65,7 +65,19 @@ internal class Edition
         return new Edition(title, releaseDate, tiraj);
     }
 
+    /// <summary>
+    /// ...
+    /// </summary>
+    /// <returns></returns>
+    public virtual int GetHashCode()
+    {
+        return 0;
+    }
 
 
+    public override string ToString()
+    {
+        return $"{Title} {ReleaseDate} {Tiraj}";
+    }
 }
 
