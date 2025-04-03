@@ -1,5 +1,4 @@
 ﻿using Main.Enum;
-using System.Diagnostics;
 
 namespace Main;
 
@@ -7,61 +6,60 @@ public class Program
 {
     static void Main(string[] args)
     {
-        #region 1
-        Magazine magazine = new Magazine("Playboy", Frequency.Monthly, new DateTime(1999, 2, 2), 1000);
-        Console.WriteLine(magazine.ToShortString());
-        #endregion
+        Edition edition = new Edition("Арбузы", new DateTime(2025, 04, 03), 10);
+        Console.WriteLine(edition.ToString());
 
-        #region 2
-        Console.WriteLine("Выходит ли журнал наждую неделю ?" + magazine[Frequency.Weekly]);
-        Console.WriteLine("Выходит ли журнал наждый месяц ?" + magazine[Frequency.Monthly]);
-        Console.WriteLine("Выходит ли журнал наждый год ?" + magazine[Frequency.Yearly]);
-        #endregion
+        Edition edition2 = new Edition("Арбузы", new DateTime(2025, 04, 03), 10);
+        Console.WriteLine(edition2.ToString());
 
-        #region 3 4
-        Author author = new Author("Dmirtiy", "Revo", new DateTime(2005, 8, 8));
+        Console.WriteLine($"Равны ли ссылки? {ReferenceEquals(edition, edition2)}");
+        Console.WriteLine($"Равны ли значения? {edition.Equals(edition2)}");
 
-        Article article = new Article(author, "Как клеить обои.", 0);
+        Console.WriteLine($"Hash code edition = {edition.GetHashCode()}");
+        Console.WriteLine($"Hash code edition2 = {edition2.GetHashCode()}");
 
-        magazine.AddArticles(new Article[] { article });
-        Console.WriteLine(magazine.ToString());
-        #endregion
+        try
+        {
+            Edition edition3 = new Edition("Арбузы", new DateTime(2025, 03, 06), -1);
+        }
+        catch (ArgumentException e)
+        {
+            Console.WriteLine($"Ошибка: {e.Message}");
+        }
 
-        #region 5
-        int rows = 1000;
-        int columns = 1000;
+        NewMagazine newMagazine = new NewMagazine("Ну Журнал", new DateTime(2025, 04, 03), 10, Frequency.Monthly);
 
-        Article[] Array1 = new Article[rows * columns];
-        Article[,] Array2 = new Article[rows, columns];
-        Article[][] jaggedArray = new Article[rows][];
-        for (int i = 0; i < rows; i++)
-            jaggedArray[i] = new Article[columns];
+        //Editors
+        Author author = new Author("Dmitriy", "Revo", new DateTime(2005, 08, 08));
 
-        Stopwatch timer = new Stopwatch();
+        //Article
 
-        //для одномерного массива
-        timer.Start();
-        int size = rows * columns;
-        for (int i = 0; i < size; i++)
-            Array1[i] = new Article();
-        timer.Stop();
-        Console.WriteLine($"Измерение времени для одномерного массива: {timer.Elapsed.TotalSeconds} сек");
+        Article article = new Article(author, "Как производить Пармезан", 10);
+        Article article1 = new Article(author, "Как производить Рокфор", 9);
+        Article article2 = new Article(author, "Как производить Горгонзолу", 8);
 
-        //для двумерного массива
-        timer.Restart();
-        for (int i = 0; i < rows; i++)
-            for (int j = 0; j < columns; j++)
-                Array2[i, j] = new Article();
-        timer.Stop();
-        Console.WriteLine($"Измерение времени для двумерного массива: {timer.Elapsed.TotalSeconds} сек");
+        newMagazine.AddArticles(article, article1, article2);
+        newMagazine.AddEditors(author);
+        Console.WriteLine(newMagazine.ToString());
 
-        //для ступенчатого массива
-        timer.Restart();
-        for (int i = 0; i < rows; i++)
-            for (int j = 0; j < columns; j++)
-                jaggedArray[i][j] = new Article();
-        timer.Stop();
-        Console.WriteLine($"Измерение времени для ступенчатого массива: {timer.Elapsed.TotalSeconds} сек");
-        #endregion
+        Console.WriteLine(newMagazine.Edition.ToString());
+
+        NewMagazine copy = (NewMagazine)newMagazine.DeepCopy();
+        Console.WriteLine("КОПИЯ\n" + copy.ToString());
+
+        newMagazine.Title = "Сыр как смысл жизни";
+
+        Console.WriteLine("ОРИГИНАЛ\n" + newMagazine.ToString());
+
+        Console.WriteLine("Статьи с рейтингом 9+");
+        foreach (Article a in newMagazine.GetArticles(8))
+        {
+            Console.WriteLine(a.ToString());
+        }
+        Console.WriteLine("Статья с ключ. словом (Пармезан)");
+        foreach (Article a in newMagazine.GetArticles("Пармезан"))
+        {
+            Console.WriteLine(a.ToString());
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Main;
+﻿using System.Reflection;
+
+namespace Main;
 
 /// <summary>
 /// Автор статьи
@@ -62,6 +64,34 @@ public class Author //Publisher
     /// <returns></returns>
     public override bool Equals(object? obj)
     {
-        return base.Equals(obj);
+        if (obj == null || obj.GetType() != this.GetType()) return false;
+
+        if (obj is Author temp)
+        {
+            return Name == temp.Name && Surname == temp.Surname && Birthday == temp.Birthday;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return Name.GetHashCode() + Surname.GetHashCode() + Birthday.GetHashCode();
+    }
+
+    public static bool operator ==(Author p1, Author p2)
+    {
+        if ((object)p1 == null || (object)p2 == null) return false;
+        return p1.Name == p2.Name && p1.Surname == p2.Surname && p1.Birthday == p2.Birthday;
+    }
+
+    public static bool operator !=(Author p1, Author p2)
+    {
+        if ((object)p1 == null || (object)p2 == null) return false;
+        return p1.Name != p2.Name || p1.Surname != p2.Surname || p1.Birthday != p2.Birthday;
+    }
+
+    public virtual object DeepCopy()
+    {
+        return new Author(Name, Surname, Birthday);
     }
 }

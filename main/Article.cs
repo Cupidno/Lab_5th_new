@@ -1,9 +1,11 @@
-﻿namespace Main;
+﻿using System;
+
+namespace Main;
 
 /// <summary>
 /// Статья
 /// </summary>
-public class Article
+public class Article : IRateAndCopy
 {
     /// <summary>
     /// Автор
@@ -38,6 +40,15 @@ public class Article
         Author = new Author();
         Title = "В мире животных!";
         Rating = 0;
+    }
+
+    /// <summary>
+    /// Метод интерфейса
+    /// </summary>
+    /// <returns>Глубокое копирование Article</returns>
+    public virtual object DeepCopy()
+    {
+        return new Article(Author, Title, Rating);
     }
 
     public override string ToString()

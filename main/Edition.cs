@@ -30,7 +30,7 @@ internal class Edition
     {
         this.title = title;
         this.releaseDate = releaseDate;
-        this.tiraj = tiraj;
+        this.Tiraj = tiraj;
     }
 
     /// <summary>
@@ -43,6 +43,7 @@ internal class Edition
         tiraj = 0;
     }
 
+    // Свойства
     public string Title { get { return title; } set { title = value; } }
     public DateTime ReleaseDate { get { return releaseDate; } set { releaseDate = value; } }
     public int Tiraj
@@ -62,22 +63,62 @@ internal class Edition
     /// </summary>
     public virtual object DeepCopy()
     {
-        return new Edition(title, releaseDate, tiraj);
+        return new Edition(Title, ReleaseDate, Tiraj);
     }
 
     /// <summary>
-    /// ...
+    /// Метод равенства объектов как совпадение всех данных объектов.
     /// </summary>
+    /// <param name="obj"></param>
     /// <returns></returns>
-    public virtual int GetHashCode()
+    public virtual bool Equals(object obj)
     {
-        return 0;
+        if (obj == null || obj.GetType() != this.GetType()) return false;
+
+        if (obj is Edition temp)
+        {
+            return Title == temp.Title && ReleaseDate == temp.ReleaseDate && Tiraj == temp.Tiraj;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Метод GetHashCode
+    /// </summary>
+    /// <returns>Сумма всех ГХК объектов</returns>
+    public override int GetHashCode()
+    {
+        return Tiraj.GetHashCode() + ReleaseDate.GetHashCode() + Title.GetHashCode();
     }
 
 
     public override string ToString()
     {
         return $"{Title} {ReleaseDate} {Tiraj}";
+    }
+
+    /// <summary>
+    /// Переопределенный "=="
+    /// </summary>
+    /// <param name="p1"></param>
+    /// <param name="p2"></param>
+    /// <returns></returns>
+    public static bool operator ==(Edition p1, Edition p2)
+    {
+        if ((object)p1 == null || (object)p2 == null) return false;
+        return p1.Title == p2.Title && p1.ReleaseDate == p2.ReleaseDate && p1.Tiraj == p2.Tiraj;
+    }
+
+    /// <summary>
+    /// Переопределенный "!="
+    /// </summary>
+    /// <param name="p1"></param>
+    /// <param name="p2"></param>
+    /// <returns></returns>
+    public static bool operator !=(Edition p1, Edition p2)
+    {
+        if ((object)p1 == null || (object)p2 == null) return false;
+        return p1.Title != p2.Title || p1.ReleaseDate != p2.ReleaseDate || p1.Tiraj != p2.Tiraj;
     }
 }
 
