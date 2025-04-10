@@ -3,7 +3,7 @@
 /// <summary>
 /// Издание
 /// </summary>
-internal class Edition
+internal class Edition : IRateAndCopy
 {
     /// <summary>
     /// Название издания
@@ -59,11 +59,22 @@ internal class Edition
     }
 
     /// <summary>
+    /// Рейтинг издания
+    /// </summary>
+    public virtual double Rating { get; } = 0;
+
+    /// <summary>
     /// Виртуальный метод глубокого копирования
     /// </summary>
     public virtual object DeepCopy()
     {
         return new Edition(Title, ReleaseDate, Tiraj);
+    }
+
+    // Явная реализация интерфейса (опционально)
+    object IRateAndCopy.DeepCopy()
+    {
+        return DeepCopy();
     }
 
     /// <summary>

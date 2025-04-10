@@ -188,6 +188,15 @@ class NewMagazine : Edition, IRateAndCopy, IEnumerable
     }
 
     /// <summary>
+    /// Явная реализация интерфейса IRateAndCopy
+    /// </summary>
+    /// <returns>Поверхностная копия объекта</returns>
+    object IRateAndCopy.DeepCopy() 
+    {
+        return base.MemberwiseClone();
+    }
+
+    /// <summary>
     /// Возвращает перечислитель для перебора статей в журнале
     /// </summary>
     /// <returns>Перечислитель статей</returns>
