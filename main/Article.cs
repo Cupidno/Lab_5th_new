@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Main;
+﻿namespace Main;
 
 /// <summary>
 /// Статья
